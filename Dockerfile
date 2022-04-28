@@ -1,7 +1,7 @@
 pipeline {
 environment {
 registry = "https://github.com/haozhe06/docker-jenkins/new/main"
-registryCredential = 'hzkong06'
+registryCredential = 'dockerhub_id'
 dockerImage = ''
 }
 agent any
