@@ -1,20 +1,35 @@
 pipeline {
+    environment {
+        registry = "hzkong06/dockerhub1"
+        registryCredential = 'dockerhub_id'
+        dockerImage = ''
+    }
     agent any
-
     stages {
-        stage('Build') {
+        stage('Cloning our Git') {
             steps {
-                echo 'Building..'
+                git 'https://github.com/haozhe06/docker-jenkins.git'
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
+        stage('Building our image') {
+            steps{
+                script {
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                }
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+        stage('Deploy our image') {
+            steps{
+                script {
+                    docker.withRegistry( '', registryCredential ) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        stage('Cleaning up') {
+            steps{
+                sh "docker rmi $registry:$BUILD_NUMBER"
             }
         }
     }
