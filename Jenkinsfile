@@ -14,7 +14,7 @@ pipeline {
         stage('Building our image') {
             steps{
                 script {
-                    app = docker.build("brandonjones085/test") 
+                    app = docker.build("hzkong06/dockerhub1") 
                 }
             }
         }
