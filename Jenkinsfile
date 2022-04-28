@@ -14,18 +14,15 @@ pipeline {
         stage('Building our image') {
             steps{
                 script {
-                    dockerImage = docker.build(registry)
+                    app = docker.build("brandonjones085/test") 
                 }
             }
         }
         stage('Deploy our image') {
-            steps{
-                script {
-                    docker.withRegistry( '', registryCredential ) {
-                        dockerImage.push()
-                    }
-                }
-            }
+            app.inside {            
+             
+             sh 'echo "Tests passed"'        
+            }    
         }
         stage('Cleaning up') {
             steps{
